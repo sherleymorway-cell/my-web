@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura 晨露 - 智能嗅觉情绪管理系统策划全案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-base: #FDFBF7;
+            --text-primary: #0D1410;
+            --accent-gold: #8B6B4F;
+            --forest-deep: #1A2421;
+            --gray-sub: #4B5563;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Serif SC', serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .font-serif { font-family: 'Noto Serif SC', serif; }
+
+        /* 图表容器：严格控制尺寸 */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        /* 详情页视觉元素：CSS 模拟设备 */
+        .device-body {
+            width: 200px;
+            height: 350px;
+            background: linear-gradient(145deg, #e5e7eb, #ffffff);
+            border-radius: 100px 100px 20px 20px;
+            box-shadow: 20px 20px 60px #d1d5db, -20px -20px 60px #ffffff;
+            position: relative;
+        }
+
+        .device-mist {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(139, 107, 79, 0.2);
+            filter: blur(20px);
+            border-radius: 50%;
+            animation: pulse-mist 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse-mist {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.3; }
+            50% { transform: translateX(-50%) scale(2); opacity: 0.6; }
+        }
+
+        /* 视觉策划：色块展示 */
+        .swatch {
+            height: 120px;
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* 滚动进入动画 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 强调文字对比度 */
+        .high-contrast-text {
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+        
+        .dark-section {
+            background-color: var(--forest-deep);
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Chosen Palette: "Modern Earth" (米白色背景 #FDFBF7, 深林墨绿文字 #0D1410, 灰褐色点缀 #8B6B4F) -->
+<!-- Application Structure Plan: 
+    1. 品牌序幕 (Hero): 核心愿景展示。
+    2. 项目背景 (Background): 都市压力与嗅觉经济的宏观背景分析。
+    3. 市场洞察 (Data Research): 使用 Chart.js 展示硬核市场数据与用户增长。
+    4. 视觉策划手册 (Visual Strategy): 详细的色值、字体、排版与材质规范，这是策划的视觉灵魂。
+    5. 产品详情长页 (Product Deep Dive): 电商详情页风格，拆解硬件、技术、算法与场景。
+    6. 商业路线图 (Business Roadmap): 盈利模式、渠道策略与三年规划。
+-->
+<!-- Visualization & Content Choices: 
+    - 使用折线图展示全球香薰市场复合增长。
+    - 使用雷达图展示 Aura 产品核心竞争力。
+    - 使用 CSS 渐变与阴影模拟阳极氧化铝、磨砂玻璃等材质感。
+    - 针对用户反馈，所有浅色背景配深色大字体，所有深色背景配加粗亮白字体。
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Global Navigation -->
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-18 flex justify-between items-center py-4">
+            <div class="font-serif text-2xl font-black tracking-tighter text-[#0D1410]">AURA <span class="text-xs font-sans font-normal ml-1 text-gray-400">晨露全案</span></div>
+            <div class="hidden lg:flex space-x-10 text-[11px] font-bold uppercase tracking-[0.2em] text-[#4B5563]">
+                <a href="#vision" class="hover:text-black transition">项目背景</a>
+                <a href="#market" class="hover:text-black transition">市场洞察</a>
+                <a href="#visual" class="hover:text-black transition">视觉策划</a>
+                <a href="#details" class="hover:text-black transition">详情页</a>
+                <a href="#business" class="hover:text-black transition">商业路径</a>
+            </div>
+            <button class="bg-[#0D1410] text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">内部审阅版</button>
+        </div>
+    </nav>
+
+    <!-- Section 1: Hero & Vision -->
+    <header id="vision" class="pt-40 pb-20 px-6 min-h-screen flex flex-col justify-center">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="space-y-10 reveal">
+                <div class="inline-block border-l-4 border-[#8B6B4F] pl-4">
+                    <p class="text-xs font-bold text-[#8B6B4F] uppercase tracking-[0.4em] mb-2">Project Aura 2026</p>
+                    <h1 class="font-serif text-5xl md:text-7xl font-black leading-tight">
+                        重塑都市人的<br><span class="text-[#8B6B4F] italic">第一缕呼吸</span>
+                    </h1>
+                </div>
+                <p class="text-lg md:text-xl text-[#4B5563] max-w-lg leading-relaxed font-light">
+                    项目背景：随着“情绪经济”崛起，嗅觉已成为心理疗愈的最短路径。Aura（晨露）是一款结合 AI 生物节律与无水喷雾技术的智能嗅觉终端。
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                    <a href="#visual" class="bg-[#0D1410] text-white px-10 py-4 rounded-2xl font-bold text-center hover:bg-black transition-all shadow-xl">视觉策划手册</a>
+                    <a href="#details" class="border-2 border-[#0D1410] text-[#0D1410] px-10 py-4 rounded-2xl font-bold text-center hover:bg-[#0D1410] hover:text-white transition-all">查看产品详情</a>
+                </div>
+            </div>
+            <div class="relative flex justify-center py-12 reveal">
+                <div class="device-body">
+                    <div class="device-mist"></div>
+                    <div class="absolute bottom-16 left-1/2 -translate-x-1/2 w-12 h-1 bg-gray-200 rounded-full"></div>
+                </div>
+                <div class="absolute top-0 right-0 bg-white p-6 rounded-3xl shadow-2xl border border-gray-100 max-w-[200px]">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">AI 核心算法</p>
+                    <p class="text-xs font-bold leading-relaxed text-[#0D1410]">基于 HRV 心率变异性，自动匹配最适合当前焦虑值的香型配方。</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section 2: Market Intelligence -->
+    <section id="market" class="py-32 bg-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20 space-y-4 reveal">
+                <h2 class="text-4xl font-serif font-black text-[#0D1410]">市场洞察：万亿级“情绪价值”赛道</h2>
+                <p class="text-[#4B5563] max-w-2xl">根据数据研究，现代人对室内环境的要求已从“功能性”转向“疗愈性”。嗅觉是唯一不经过中转直接到达大脑情绪中枢的感觉。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Market Growth -->
+                <div class="bg-[#FDFBF7] p-10 rounded-[40px] border border-gray-100 reveal">
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-10 text-center text-[#8B6B4F]">全球香薰及情绪管理市场预测 (亿元)</h3>
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+                <!-- Competency Radar -->
+                <div class="bg-[#FDFBF7] p-10 rounded-[40px] border border-gray-100 reveal">
+                    <h3 class="text-sm font-bold uppercase tracking-widest mb-10 text-center text-[#8B6B4F]">Aura 与传统竞品能力维度对比</h3>
+                    <div class="chart-container">
+                        <canvas id="competencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 reveal">
+                <div class="p-8 border-l-4 border-[#8B6B4F] bg-gray-50">
+                    <div class="text-4xl font-black mb-2">15.2%</div>
+                    <p class="text-xs font-bold text-gray-400 uppercase">未来五年复合增长率</p>
+                </div>
+                <div class="p-8 border-l-4 border-[#8B6B4F] bg-gray-50">
+                    <div class="text-4xl font-black mb-2">78%</div>
+                    <p class="text-xs font-bold text-gray-400 uppercase">职场人群表示存在“环境焦虑”</p>
+                </div>
+                <div class="p-8 border-l-4 border-[#8B6B4F] bg-gray-50">
+                    <div class="text-4xl font-black mb-2">350元+</div>
+                    <p class="text-xs font-bold text-gray-400 uppercase">高端智能香薰平均单价</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Visual Strategy Manual -->
+    <section id="visual" class="py-32 px-6 dark-section">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-24 space-y-6 reveal">
+                <div class="flex items-center gap-4">
+                    <div class="h-px w-20 bg-[#8B6B4F]"></div>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.5em] text-[#8B6B4F]">Visual Strategy Manual</span>
+                </div>
+                <h2 class="text-5xl font-serif font-black">视觉策划规范手册</h2>
+                <p class="text-gray-400 max-w-2xl">为了打造“静谧、专业、未来”的品牌印象，我们设定了严苛的视觉识别系统。这种视觉语言旨在让用户在看到产品前，就先感受到呼吸的舒缓。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Color Palette -->
+                <div class="lg:col-span-5 space-y-10 reveal">
+                    <h3 class="text-sm font-bold border-l-2 border-[#8B6B4F] pl-4 uppercase">色彩策略 / Palette</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="swatch bg-[#0D1410] text-white">#0D1410<br>深林墨绿</div>
+                        <div class="swatch bg-[#8B6B4F] text-white">#8B6B4F<br>琥珀沙褐</div>
+                        <div class="swatch bg-[#FDFBF7] text-[#0D1410]">#FDFBF7<br>晨露米白</div>
+                        <div class="swatch bg-[#E5E7EB] text-[#0D1410]">#E5E7EB<br>雾气冷灰</div>
+                    </div>
+                </div>
+
+                <!-- Materiality & Typography -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10 space-y-8">
+                        <h3 class="text-sm font-bold border-l-2 border-[#8B6B4F] pl-4 uppercase text-white">字体规范 / Type</h3>
+                        <div class="space-y-4">
+                            <p class="text-4xl font-serif font-black text-white italic">Aura Sans.</p>
+                            <p class="text-xs leading-loose text-gray-400">
+                                标题使用 Noto Serif SC (加粗)，体现品牌的人文底蕴与仪式感。<br>
+                                正文使用 Inter (无衬线)，确保数据与参数在各尺寸屏幕下的极致可读性。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 p-8 rounded-3xl border border-white/10 space-y-8">
+                        <h3 class="text-sm font-bold border-l-2 border-[#8B6B4F] pl-4 uppercase text-white">材质模拟 / Texture</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="aspect-square bg-gradient-to-br from-gray-200 to-gray-500 rounded-2xl flex items-end p-3">
+                                <span class="text-[8px] font-bold text-white uppercase">阳极氧化铝</span>
+                            </div>
+                            <div class="aspect-square bg-white/20 backdrop-blur-lg border border-white/20 rounded-2xl flex items-end p-3">
+                                <span class="text-[8px] font-bold text-white uppercase">蚀刻磨砂玻璃</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Product Detail Page (Simulated) -->
+    <section id="details" class="py-32 px-6 bg-white overflow-hidden">
+        <div class="max-w-4xl mx-auto">
+            <!-- Details Intro -->
+            <div class="text-center mb-32 reveal">
+                <h2 class="text-5xl font-serif font-black text-[#0D1410] italic mb-6">Product Details.</h2>
+                <div class="h-1.5 w-24 bg-[#8B6B4F] mx-auto"></div>
+                <p class="mt-8 text-gray-500 font-bold uppercase tracking-widest text-xs">详情页策划图示</p>
+            </div>
+
+            <!-- Detail Module 1 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mb-48 reveal">
+                <div class="space-y-8">
+                    <div class="text-[#8B6B4F] text-xs font-bold uppercase tracking-widest italic">Chapter 01 / Diffusion</div>
+                    <h3 class="text-4xl font-serif font-black leading-tight">微米级无水扩散<br>唤醒嗅觉深度</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        不同于传统的超声波水雾，Aura 采用 **Nano-Cloud™** 物理雾化技术。精油被粉碎至 0.5μm 的颗粒，直接漂浮在空气中。不潮湿、不稀释、不改变空气成分。
+                    </p>
+                    <ul class="space-y-3 text-xs font-bold">
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#8B6B4F] rounded-full"></div> 100% 纯精油直喷</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#8B6B4F] rounded-full"></div> 50平米广域覆盖</li>
+                        <li class="flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#8B6B4F] rounded-full"></div> 智能防堵塞喷头</li>
+                    </ul>
+                </div>
+                <div class="flex justify-center">
+                    <!-- CSS Capsule System -->
+                    <div class="w-48 h-72 bg-[#FDFBF7] border-4 border-gray-100 rounded-3xl shadow-2xl p-6 flex flex-col justify-between">
+                        <div class="text-[8px] font-bold text-gray-400 uppercase tracking-widest">Aura Pod V1.0</div>
+                        <div class="w-full h-1/2 bg-[#8B6B4F]/10 rounded-2xl flex items-center justify-center">
+                            <div class="w-12 h-12 bg-[#8B6B4F] rounded-full shadow-lg"></div>
+                        </div>
+                        <p class="text-[10px] text-[#8B6B4F] font-bold text-center">密封胶囊系统</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Module 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center flex-row-reverse reveal">
+                <div class="order-2 md:order-1 bg-gray-50 rounded-[60px] p-12 aspect-square flex flex-col justify-center items-center">
+                    <div class="text-6xl mb-6">📱</div>
+                    <h4 class="font-bold text-sm mb-2 text-[#0D1410]">情绪追踪 App</h4>
+                    <p class="text-center text-[10px] text-gray-400 max-w-[180px]">与苹果健康深度联动，自动根据心率变异数调整工作强度。</p>
+                </div>
+                <div class="order-1 md:order-2 space-y-8">
+                    <div class="text-[#8B6B4F] text-xs font-bold uppercase tracking-widest italic">Chapter 02 / Intelligence</div>
+                    <h3 class="text-4xl font-serif font-black leading-tight">不仅是气味<br>更是你的情绪管家</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        通过 AI 算法，Aura 能够感知你的生物钟。清晨是薄荷与柠檬的振奋，深夜是缬草与岩兰草的静谧。它随你而动，懂你所需。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Business Roadmap -->
+    <section id="business" class="py-32 px-6 dark-section">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20 space-y-6 reveal">
+                <h2 class="text-4xl font-serif font-black">商业路径与盈利逻辑</h2>
+                <p class="text-gray-400 max-w-2xl">Aura 不仅仅是一个硬件项目。我们采用“硬件作为入口，耗材作为营收核心”的经典商业模型。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24 reveal">
+                <div class="bg-white/5 p-10 rounded-[40px] border border-white/10 space-y-6">
+                    <h4 class="text-accent-gold font-bold text-xs uppercase tracking-widest">盈利模式 A</h4>
+                    <p class="text-xl font-serif font-black">订阅制精油胶囊</p>
+                    <p class="text-xs text-gray-400">用户每月支付 99 元，即可获得 2 颗由调香师定制的季节性胶囊。确保高 LTV (生命周期价值)。</p>
+                </div>
+                <div class="bg-white/5 p-10 rounded-[40px] border border-white/10 space-y-6">
+                    <h4 class="text-accent-gold font-bold text-xs uppercase tracking-widest">盈利模式 B</h4>
+                    <p class="text-xl font-serif font-black">B端空间定制</p>
+                    <p class="text-xs text-gray-400">为高端酒店、私教工作室提供定制化空间气味方案。提升空间品牌溢价。</p>
+                </div>
+                <div class="bg-white/5 p-10 rounded-[40px] border border-white/10 space-y-6">
+                    <h4 class="text-accent-gold font-bold text-xs uppercase tracking-widest">盈利模式 C</h4>
+                    <p class="text-xl font-serif font-black">AI 情绪数据授权</p>
+                    <p class="text-xs text-gray-400">通过脱敏的情绪数据，为车载、智能家居企业提供感官交互的 API 支持。</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[60px] p-12 lg:p-20 text-[#0D1410] reveal">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                    <div>
+                        <h3 class="text-3xl font-serif font-black mb-8">三年营收增长预测 (万元)</h3>
+                        <p class="text-[#4B5563] text-sm mb-12">随着胶囊订阅用户基数的增长，边际成本将急剧下降，第三年预计实现利润率 28% 以上。</p>
+                        <div class="space-y-4">
+                            <div class="flex justify-between font-bold text-xs py-4 border-b"><span>2026: 核心产品验证期</span> <span class="text-[#8B6B4F]">¥1,200W</span></div>
+                            <div class="flex justify-between font-bold text-xs py-4 border-b"><span>2027: 渠道全面铺设期</span> <span class="text-[#8B6B4F]">¥4,500W</span></div>
+                            <div class="flex justify-between font-bold text-xs py-4"><span>2028: 生态壁垒建成期</span> <span class="text-[#8B6B4F]">¥18,000W</span></div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <footer class="py-24 text-center bg-white px-6">
+        <div class="max-w-2xl mx-auto space-y-10 reveal">
+            <div class="text-4xl font-serif font-black italic">Breathe Different.</div>
+            <p class="text-gray-500 text-sm uppercase tracking-[0.5em]">Aura Project 2026 | 内部保密策划案</p>
+            <div class="h-px w-20 bg-[#8B6B4F] mx-auto"></div>
+            <p class="text-[10px] text-gray-400 font-bold uppercase">Confidential Project Report | For Internal PM Review Only</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Charts Initialization ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = "#4B5563";
+
+        const initCharts = () => {
+            // Market Growth (Line Chart)
+            const ctxMarket = document.getElementById('marketChart').getContext('2d');
+            new Chart(ctxMarket, {
+                type: 'line',
+                data: {
+                    labels: ['2023', '2024', '2025', '2026(E)', '2027(E)'],
+                    datasets: [{
+                        label: '市场规模',
+                        data: [150, 210, 340, 580, 890],
+                        borderColor: '#8B6B4F',
+                        backgroundColor: 'rgba(139, 107, 79, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: { borderDash: [5, 5] }, ticks: { stepSize: 200 } }
+                    }
+                }
+            });
+
+            // Competency Radar Chart
+            const ctxRadar = document.getElementById('competencyChart').getContext('2d');
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['智能算法', '扩散效率', '工业美学', '续航性能', '品牌溢价', '胶囊复购'],
+                    datasets: [{
+                        label: 'Aura (晨露)',
+                        data: [95, 90, 98, 85, 80, 92],
+                        backgroundColor: 'rgba(13, 20, 16, 0.2)',
+                        borderColor: '#0D1410',
+                        pointBackgroundColor: '#0D1410'
+                    }, {
+                        label: '传统竞品',
+                        data: [40, 60, 50, 70, 65, 30],
+                        backgroundColor: 'rgba(139, 107, 79, 0.1)',
+                        borderColor: '#8B6B4F',
+                        pointBackgroundColor: '#8B6B4F'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: { angleLines: { display: false }, suggestedMin: 0, suggestedMax: 100 }
+                    }
+                }
+            });
+
+            // Revenue Bar Chart
+            const ctxRev = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctxRev, {
+                type: 'bar',
+                data: {
+                    labels: ['2026', '2027', '2028'],
+                    datasets: [
+                        { label: '硬件收入', data: [800, 1500, 3000], backgroundColor: '#0D1410', borderRadius: 10 },
+                        { label: '胶囊订阅收入', data: [400, 3000, 15000], backgroundColor: '#8B6B4F', borderRadius: 10 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { x: { stacked: true }, y: { stacked: true, grid: { display: false } } }
+                }
+            });
+        };
+
+        // --- Reveal Logic ---
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // --- Initialization ---
+        window.onload = initCharts;
+    </script>
+</body>
+</html>
